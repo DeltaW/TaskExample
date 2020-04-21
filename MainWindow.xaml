@@ -1,0 +1,26 @@
+﻿<Window x:Class="TaskExample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskExample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Canvas Background="#19275B">
+
+        <Rectangle x:Name="RacerOne"
+                   Canvas.Left="10"
+                   Canvas.Top="10"
+                   Fill="#13974B"
+                   Width="40"
+                   Height="40"/>
+
+        <Rectangle x:Name="RacerTwo"
+                   Canvas.Left="10"
+                   Canvas.Top="60"
+                   Fill="#91275B"
+                   Width="40"
+                   Height="40"/>
+
+    </Canvas>
+</Window>
