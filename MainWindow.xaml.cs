@@ -61,8 +61,8 @@ namespace TaskExample {
             //racerOneTask.Start();
             //racerTwoTask.Start();
             #endregion
-
-
+            #region
+            /*
             int raceLength = 500;
 
             Task one = new Task(() => Application.Current.Dispatcher.Invoke(() => {
@@ -93,8 +93,65 @@ namespace TaskExample {
 
             one.Start();
             two.Start();
+            */
+            #endregion
+
+
+            this.StartRunners();
 
         }
+
+        private async Task StartRunners() {
+            CancellationTokenSource tokenSource = new CancellationTokenSource();
+
+            List<Task> tasks = new List<Task>() {
+                RunnerOne(tokenSource), RunnerTwo(tokenSource),
+            };
+
+            await Task.WhenAll(tasks);
+            MyCanvas.Background = Brushes.DarkSlateBlue;
+        }
+
+        private Task RunnerOne(CancellationTokenSource tokenSource, int raceLength = 500, int step = 10) {
+            return Task.Run(() => Application.Current.Dispatcher.Invoke(async () => {
+                while (Canvas.GetLeft(this.RacerOne) < raceLength) {
+                    if (tokenSource.Token.IsCancellationRequested) {
+                        break;
+                    }
+                    Canvas.SetLeft(this.RacerOne,
+                                   (double) Clamp((int) Canvas.GetLeft(this.RacerOne) + step,
+                                                  (int) Canvas.GetLeft(this.RacerOne),
+                                                  raceLength));
+
+                    // Update UI
+                    Application.Current.Dispatcher.Invoke(delegate { }, System.Windows.Threading.DispatcherPriority.Render);
+                    await Task.Delay(MyRandom.Next(25, 101));
+                }
+                tokenSource.Cancel();
+            }));
+        }
+
+        private Task RunnerTwo(CancellationTokenSource tokenSource, int raceLength = 500, int step = 10) {
+            return Task.Run(() => Application.Current.Dispatcher.Invoke(async () => {
+                while (Canvas.GetLeft(this.RacerTwo) < raceLength) {
+                    if (tokenSource.Token.IsCancellationRequested) {
+                        break;
+                    }
+                    Canvas.SetLeft(this.RacerTwo,
+                                   (double) Clamp((int) Canvas.GetLeft(this.RacerTwo) + step,
+                                                  (int) Canvas.GetLeft(this.RacerTwo),
+                                                  raceLength));
+
+                    // Update UI
+                    Application.Current.Dispatcher.Invoke(delegate { }, System.Windows.Threading.DispatcherPriority.Render);
+                    await Task.Delay(MyRandom.Next(10, 101));
+                }
+                tokenSource.Cancel();
+            }));
+        }
+
+        public static Random MyRandom = new Random();
+
         public static int Clamp(int value, int min, int max) {
             return (value < min) ? min : ((value > max) ? max : value);
         }

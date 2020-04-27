@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:TaskExample"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Canvas Background="#19275B">
+
+    <Canvas x:Name="MyCanvas"
+            Background="#19275B">
 
         <Rectangle x:Name="RacerOne"
                    Canvas.Left="10"
