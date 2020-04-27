@@ -114,6 +114,7 @@ namespace TaskExample {
 
         private Task RunnerOne(CancellationTokenSource tokenSource, int raceLength = 500, int step = 10) {
             return Task.Run(() => Application.Current.Dispatcher.Invoke(async () => {
+                int delay = MyRandom.Next(10, 101);
                 while (Canvas.GetLeft(this.RacerOne) < raceLength) {
                     if (tokenSource.Token.IsCancellationRequested) {
                         break;
@@ -125,7 +126,7 @@ namespace TaskExample {
 
                     // Update UI
                     Application.Current.Dispatcher.Invoke(delegate { }, System.Windows.Threading.DispatcherPriority.Render);
-                    await Task.Delay(MyRandom.Next(25, 101));
+                    await Task.Delay(delay);
                 }
                 tokenSource.Cancel();
             }));
@@ -133,6 +134,7 @@ namespace TaskExample {
 
         private Task RunnerTwo(CancellationTokenSource tokenSource, int raceLength = 500, int step = 10) {
             return Task.Run(() => Application.Current.Dispatcher.Invoke(async () => {
+                int delay = MyRandom.Next(10, 101);
                 while (Canvas.GetLeft(this.RacerTwo) < raceLength) {
                     if (tokenSource.Token.IsCancellationRequested) {
                         break;
@@ -144,7 +146,7 @@ namespace TaskExample {
 
                     // Update UI
                     Application.Current.Dispatcher.Invoke(delegate { }, System.Windows.Threading.DispatcherPriority.Render);
-                    await Task.Delay(MyRandom.Next(10, 101));
+                    await Task.Delay(delay);
                 }
                 tokenSource.Cancel();
             }));
